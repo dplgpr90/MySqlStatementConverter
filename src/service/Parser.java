@@ -2,10 +2,10 @@ package service;
 
 import java.io.Reader;
 
-import model.Table;
+import model.Statement;
 
 public interface Parser {
 
-	public Table parse(Reader r);
+	public Statement insert2Update(Reader r);
 
 }
