@@ -1,8 +1,8 @@
-package service;
+package main.java.insert2Update.service;
 
 import java.io.Reader;
 
-import model.Statement;
+import main.java.insert2Update.model.Statement;
 
 public interface Parser {
 

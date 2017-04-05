@@ -1,11 +1,11 @@
-package service.impl;
+package main.java.insert2Update.service.impl;
 
 import java.io.Reader;
 
-import model.Insert;
-import model.Statement;
-import model.Update;
-import service.Parser;
+import main.java.insert2Update.model.Insert;
+import main.java.insert2Update.model.Statement;
+import main.java.insert2Update.model.Update;
+import main.java.insert2Update.service.Parser;
 
 public class ParserImpl implements Parser {
 

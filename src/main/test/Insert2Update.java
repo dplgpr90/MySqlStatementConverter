@@ -1,12 +1,12 @@
-package insert2Update;
+package main.test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 
-import model.Statement;
-import service.Parser;
-import service.impl.ParserImpl;
+import main.java.insert2Update.model.Statement;
+import main.java.insert2Update.service.Parser;
+import main.java.insert2Update.service.impl.ParserImpl;
 
 /**
  * @author Giampiero Di Paolo

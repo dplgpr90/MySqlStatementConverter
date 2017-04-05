@@ -1,4 +1,4 @@
-package service;
+package main.java.insert2Update.service;
 
 public interface Scanner {
 	

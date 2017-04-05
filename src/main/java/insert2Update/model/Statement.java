@@ -1,4 +1,4 @@
-package model;
+package main.java.insert2Update.model;
 
 public interface Statement {
 

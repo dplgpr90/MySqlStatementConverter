@@ -1,9 +1,9 @@
-package service.impl;
+package main.java.insert2Update.service.impl;
 
 import java.io.IOException;
 import java.io.Reader;
 
-import service.Tokenizer;
+import main.java.insert2Update.service.Tokenizer;
 
 public class TokenizerImpl implements Tokenizer {
 

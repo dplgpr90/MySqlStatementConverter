@@ -1,11 +1,11 @@
-package service.impl;
+package main.java.insert2Update.service.impl;
 
 import java.io.IOException;
 import java.io.Reader;
 
-import service.Scanner;
-import service.Tokenizer;
-import service.Type;
+import main.java.insert2Update.service.Scanner;
+import main.java.insert2Update.service.Tokenizer;
+import main.java.insert2Update.service.Type;
 
 public class ScannerImpl implements Scanner {
 	

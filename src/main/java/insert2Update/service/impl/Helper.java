@@ -1,17 +1,17 @@
-package service.impl;
+package main.java.insert2Update.service.impl;
 
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Column;
-import model.Insert;
-import model.Statement;
-import model.Target;
-import model.Update;
-import model.Value;
-import service.Scanner;
-import service.Type;
+import main.java.insert2Update.model.Column;
+import main.java.insert2Update.model.Insert;
+import main.java.insert2Update.model.Statement;
+import main.java.insert2Update.model.Target;
+import main.java.insert2Update.model.Update;
+import main.java.insert2Update.model.Value;
+import main.java.insert2Update.service.Scanner;
+import main.java.insert2Update.service.Type;
 
 public class Helper {
 

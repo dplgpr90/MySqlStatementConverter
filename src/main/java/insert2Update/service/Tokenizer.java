@@ -1,8 +1,8 @@
-package service;
+package main.java.insert2Update.service;
 
 import java.io.IOException;
 
-import service.impl.TokenType;
+import main.java.insert2Update.service.impl.TokenType;
 
 public interface Tokenizer {
 
