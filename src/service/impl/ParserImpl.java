@@ -12,11 +12,16 @@ public class ParserImpl implements Parser {
 	/*
 	 * STATEMENT ::= INSERT | *add here grammar extensions*
 	 * 
-	 * INSERT ::= insert into TARGET (COLUMNS) values VALUES_LIST; TARGET ::=
-	 * SCHEMA . TABLE | TABLE COLUMNS ::= COLUMN | COLUMN , COLUMNS VALUES_LIST
-	 * ::= ( VALUES ) | ( VALUES ) , VALUES_LIST VALUES ::= VALUE | VALUE ,
-	 * VALUES COLUMN ::= stringa di testo TABLE ::= stringa di testo SCHEMA ::=
-	 * stringa di testo VALUE ::= stringa di testo
+	 * INSERT ::= insert into TARGET (COLUMNS) values VALUES_LIST; 
+	 * TARGET ::= SCHEMA . TABLE | TABLE 
+	 * COLUMNS ::= COLUMN | COLUMN , COLUMNS 
+	 * VALUES_LIST ::= ( VALUES ) | ( VALUES ) , VALUES_LIST 
+	 * VALUES ::= VALUE | VALUE , VALUES 
+	 * COLUMN ::= stringa di testo 
+	 * TABLE ::= stringa di testo 
+	 * SCHEMA ::= stringa di testo 
+	 * VALUE ::= stringa di testo | stringa di testo () | "stringa di testo" | 'stringa di testo'
+	 * 
 	 */
 
 	@Override

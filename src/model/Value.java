@@ -9,4 +9,7 @@ public class Value {
 		this.val = val;
 	}
 
+	public String toString() {
+		return val;
+	}
 }

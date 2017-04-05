@@ -7,6 +7,7 @@ import java.util.List;
 import model.Column;
 import model.Insert;
 import model.Statement;
+import model.Target;
 import model.Update;
 import model.Value;
 import service.Scanner;
@@ -36,15 +37,42 @@ public class Helper {
 	}
 
 	private Update insert2Update() {
-		checkKeywordByName("insert");
-		checkKeywordByName("into");
+		nextToken();
+		// TODO replace insert into
+		Target target = target();
 		Column[] cols = columns();
 		checkKeywordByName("values");
+		
+		// TODO gestire caratteri tt in possibile valore
 		Value[] vals = values();
-		Update table = new Update(cols, vals);
-		nextToken();
+		
+		
+		Update table = new Update(target, cols, vals);
 		expect(Type.SEMICOLON);
 		return table;
+	}
+
+	private Target target() {
+		String schema = "";
+		String table = "";
+
+		if (token == Type.TEXT) {
+			table = scanner.getInput().getSval();
+			expect(Type.TEXT);
+		}
+
+		if (token == Type.DOT) {
+			expect(Type.DOT);
+
+			if (token == Type.TEXT) {
+				schema = table;
+				table = scanner.getInput().getSval();
+				expect(Type.TEXT);
+			}
+		}
+
+		Target target = new Target(schema, table);
+		return target;
 	}
 
 	private Column[] columns() {
@@ -94,7 +122,7 @@ public class Helper {
 	}
 
 	private void checkKeywordByName(String keyword) {
-		if (!keyword.equals(scanner.getInput().getSval())) {
+		if (!keyword.equalsIgnoreCase(scanner.getInput().getSval().trim())) {
 			error("Syntax error: '" + scanner.getInput().getSval() + "'.");
 		}
 		expect(Type.TEXT);

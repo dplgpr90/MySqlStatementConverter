@@ -9,4 +9,7 @@ public class Column {
 		this.name = name;
 	}
 
+	public String toString() {
+		return name;
+	}
 }

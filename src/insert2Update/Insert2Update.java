@@ -4,9 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 
-import service.Scanner;
-import service.Type;
-import service.impl.ScannerImpl;
+import model.Statement;
+import service.Parser;
+import service.impl.ParserImpl;
 
 /**
  * @author Giampiero Di Paolo
@@ -26,18 +26,12 @@ public class Insert2Update {
 			// TODO
 
 			Reader r = new FileReader(inputFile);
-			Scanner scanner = new ScannerImpl(r);
+			Parser p = new ParserImpl();
+			
+			Statement u = p.insert2Update(r);
+			
+			System.out.println(u);
 
-			int i = 0;
-			while (true) {
-				i++;
-				Type t = scanner.nextToken();
-				System.out.println(t);
-				if (t.equals(Type.EOF) || i==40) {
-					break;
-				}
-
-			}
 		} else {
 			System.err.println("USAGE - 2 parameters requested: [inputFile] [outputFile].");
 		}

@@ -33,6 +33,12 @@ public class ScannerImpl implements Scanner {
 				return Type.NULL;
 			case TT_SEMICOLON:
 				return Type.SEMICOLON;
+			case TT_DOT:
+				return Type.DOT;
+			case TT_APICES:
+				return Type.APICES;
+			case TT_APICES2:
+				return Type.APICES2;
 			default:
 				return Type.OTHER;
 			}

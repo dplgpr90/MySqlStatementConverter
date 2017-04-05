@@ -15,8 +15,14 @@ public class TokenizerImpl implements Tokenizer {
 
 	private static final char COMMA = ',';
 
+	private static final char DOT = '.';
+
+	private static final char APICES = '"';
+
+	private static final char APICES2 = '\'';
+
 	// stop-char for stopping reading text
-	int[] stopChars = { COMMA, SEMICOLON, OPEN_BRACKET, CLOSED_BRACKET };
+	int[] stopChars = { COMMA, SEMICOLON, OPEN_BRACKET, CLOSED_BRACKET, DOT, APICES, APICES2 };
 
 	// reader
 	public Reader reader = null;
@@ -115,6 +121,15 @@ public class TokenizerImpl implements Tokenizer {
 			break;
 		case OPEN_BRACKET:
 			tokenType = TokenType.TT_OPEN_BRACKET;
+			break;
+		case DOT:
+			tokenType = TokenType.TT_DOT;
+			break;
+		case APICES:
+			tokenType = TokenType.TT_APICES;
+			break;
+		case APICES2:
+			tokenType = TokenType.TT_APICES2;
 			break;
 		default:
 			// current char is not a syntax constant
