@@ -8,7 +8,7 @@ import service.Tokenizer;
 import service.Type;
 
 public class ScannerImpl implements Scanner {
-
+	
 	public Tokenizer input;
 
 	public ScannerImpl(Reader r) {
@@ -39,5 +39,10 @@ public class ScannerImpl implements Scanner {
 		} catch (IOException ex) {
 			return Type.EOF;
 		}
+	}
+
+	@Override
+	public Tokenizer getInput() {
+		return input;
 	}
 }

@@ -4,6 +4,7 @@ import java.io.Reader;
 
 import model.Insert;
 import model.Statement;
+import model.Update;
 import service.Parser;
 
 public class ParserImpl implements Parser {
@@ -21,7 +22,7 @@ public class ParserImpl implements Parser {
 	@Override
 	public Statement insert2Update(Reader r) {
 		Helper h = new Helper(r);
-		return h.parse(Insert.class);
+		return h.parse(Insert.class, Update.class);
 	}
 
 }

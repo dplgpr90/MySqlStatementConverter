@@ -21,6 +21,9 @@ public class TokenizerImpl implements Tokenizer {
 	// reader
 	public Reader reader = null;
 
+	// current token string
+	public String sval = null;
+
 	// flag true if pushBack method has been invoked
 	public boolean isPushBackRequired = false;
 
@@ -29,9 +32,6 @@ public class TokenizerImpl implements Tokenizer {
 
 	// previous char
 	public int previousChar;
-
-	// current token string
-	public String sval = null;
 
 	// constructor
 	public TokenizerImpl(Reader r) {
@@ -174,6 +174,11 @@ public class TokenizerImpl implements Tokenizer {
 				return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String getSval() {
+		return sval;
 	}
 
 }

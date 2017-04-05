@@ -12,5 +12,7 @@ public interface Tokenizer {
 
 	// This method returns the type of the token read
 	public TokenType nextToken() throws IOException;
+	
+	public abstract String getSval();
 
 }

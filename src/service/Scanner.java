@@ -2,6 +2,8 @@ package service;
 
 public interface Scanner {
 	
-	public Type nextToken();
+	public abstract Type nextToken();
+	
+	public abstract Tokenizer getInput();
 	
 }

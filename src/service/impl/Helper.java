@@ -4,96 +4,102 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.rowset.internal.Row;
-
+import model.Column;
 import model.Insert;
 import model.Statement;
+import model.Update;
+import model.Value;
 import service.Scanner;
 import service.Type;
 
 public class Helper {
-	
+
 	private Scanner scanner;
 	private Type token;
-	
-	public Helper(Reader r){
+
+	public Helper(Reader r) {
 		scanner = new ScannerImpl(r);
 	}
 
-	public Statement parse(Class sourceClass) {
-		if(sourceClass.equals(Insert.class)){
-			return htmlFile();
+	public Statement parse(Class<?> sourceClass, Class<?> targetClass) {
+		if (sourceClass.equals(Insert.class)) {
+			return insert2Statement(targetClass);
 		}
 		return null;
 	}
-	
-	private Table htmlFile() {
+
+	private Statement insert2Statement(Class<?> targetClass) {
+		if (targetClass.equals(Update.class)) {
+			return insert2Update();
+		}
+		return null;
+	}
+
+	private Update insert2Update() {
+		checkKeywordByName("insert");
+		checkKeywordByName("into");
+		Column[] cols = columns();
+		checkKeywordByName("values");
+		Value[] vals = values();
+		Update table = new Update(cols, vals);
 		nextToken();
-		checkTagByName("html");
-		Table table = body();
-		checkTagByName("/html");
+		expect(Type.SEMICOLON);
 		return table;
 	}
-	
-	private Table body(){
-		checkTagByName("body");
-		Table table = table();
-		checkTagByName("/body");
-		return table;
+
+	private Column[] columns() {
+		List<Column> cols = new ArrayList<Column>();
+		expect(Type.OPEN_BRACKET);
+		while (token != Type.CLOSED_BRACKET) {
+			cols.add(column());
+			if (token != Type.CLOSED_BRACKET) {
+				expect(Type.COMMA);
+			}
+		}
+		expect(Type.CLOSED_BRACKET);
+		return cols.toArray(new Column[0]);
 	}
-	
-	private Table table(){
-		checkTagByName("table");
-		Table table = new Table(rows());
-		checkTagByName("/table");
-		return table;
-	}
-	
-	private Row[] rows(){
-		List<Row> rows = new ArrayList<Row>();
-		while(token==Type.TAG && scanner.input.sval.equals("tr"))
-			rows.add(row());
-		return rows.toArray(new Row[0]);
-	}
-	
-	private Row row(){		
-		expect(Type.TAG);
-		Row row = new Row(tableData());
-		checkTagByName("/tr");
-		return row;
-	}
-	
-	private TableData[] tableData(){
-		List<TableData> tds = new ArrayList<TableData>();
-		while(token==Type.TAG && scanner.input.sval.equals("td"))
-			tds.add(td());
-		return tds.toArray(new TableData[0]);
-	}
-	
-	private TableData td(){			
-		expect(Type.TAG);
+
+	private Column column() {
 		String val = "";
-		if(token == Type.TEXT){
-			val = scanner.input.sval;
+		if (token == Type.TEXT) {
+			val = scanner.getInput().getSval();
 			expect(Type.TEXT);
 		}
-		TableData td = new TableData(val);
-		checkTagByName("/td");
-		return td;
+		Column col = new Column(val);
+		return col;
 	}
-	
-	private void checkTagByName(String tagName){
-		if(!tagName.equals(scanner.input.sval)){
-			String options = "";
-			if(tagName.equals("/table"))
-				options = " or '<tr>'";
-			else if(tagName.equals("/tr"))
-				options = " or '<td>'";
-			error("Syntax error: '" + scanner.input.sval + "'. Expected " + "'<" + tagName + ">'" + options + ".");			
+
+	private Value[] values() {
+		List<Value> vals = new ArrayList<Value>();
+		expect(Type.OPEN_BRACKET);
+		while (token != Type.CLOSED_BRACKET) {
+			vals.add(value());
+			if (token != Type.CLOSED_BRACKET) {
+				expect(Type.COMMA);
+			}
 		}
-		expect(Type.TAG);
+		expect(Type.CLOSED_BRACKET);
+		return vals.toArray(new Value[0]);
 	}
-	
+
+	private Value value() {
+		String sval = "";
+		if (token == Type.TEXT) {
+			sval = scanner.getInput().getSval();
+			expect(Type.TEXT);
+		}
+		Value val = new Value(sval);
+		return val;
+	}
+
+	private void checkKeywordByName(String keyword) {
+		if (!keyword.equals(scanner.getInput().getSval())) {
+			error("Syntax error: '" + scanner.getInput().getSval() + "'.");
+		}
+		expect(Type.TEXT);
+	}
+
 	private void expect(Type t) {
 		if (token != t)
 			error("Syntax error: expected token Type." + t);
@@ -103,10 +109,10 @@ public class Helper {
 	private void nextToken() {
 		token = scanner.nextToken();
 	}
-	
-	private void error(String msg){
+
+	private void error(String msg) {
 		System.err.println(msg);
 		System.exit(1);
 	}
-	
+
 }
