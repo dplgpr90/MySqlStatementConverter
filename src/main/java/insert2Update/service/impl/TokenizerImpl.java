@@ -1,3 +1,12 @@
+/**************************************************************************
+*  
+* Created on  : 8-apr-2017
+* Author      : Giampiero Di Paolo
+* Project Name: Insert2Update  
+* Package     : main.java.insert2Update.service.impl
+* File Name   : TokenizerImpl.java
+* 
+***************************************************************************/
 package main.java.insert2Update.service.impl;
 
 import java.io.IOException;
@@ -5,49 +14,79 @@ import java.io.Reader;
 
 import main.java.insert2Update.service.Tokenizer;
 
+/**
+ * The Class TokenizerImpl.
+ */
 public class TokenizerImpl implements Tokenizer {
 
+	/** The Constant OPEN_BRACKET. */
 	private static final char OPEN_BRACKET = '(';
 
+	/** The Constant CLOSED_BRACKET. */
 	private static final char CLOSED_BRACKET = ')';
 
+	/** The Constant SEMICOLON. */
 	private static final char SEMICOLON = ';';
 
+	/** The Constant COMMA. */
 	private static final char COMMA = ',';
 
+	/** The Constant DOT. */
 	private static final char DOT = '.';
 
-	private static final char APICES = '"';
+	/** The Constant APEX. */
+	private static final char APEX = '\'';
 
-	private static final char APICES2 = '\'';
+	/** The Constant QUOTES. */
+	private static final char QUOTES = '"';
 
-	// stop-char for stopping reading text
-	int[] stopChars = { COMMA, SEMICOLON, OPEN_BRACKET, CLOSED_BRACKET, DOT, APICES, APICES2 };
+	/** The Constant BACKSLASH. */
+	private static final char BACKSLASH = '\\';
 
-	// reader
+	/** The stop chars. stop-char for stopping reading text */
+	int[] stopChars = { COMMA, SEMICOLON, OPEN_BRACKET, CLOSED_BRACKET, DOT, APEX, QUOTES, BACKSLASH };
+
+	/** The reader. */
 	public Reader reader = null;
 
-	// current token string
+	/** The sval. current token string. */
 	public String sval = null;
 
-	// flag true if pushBack method has been invoked
+	/**
+	 * The is push back required. Flag true if pushBack method has been invoked
+	 */
 	public boolean isPushBackRequired = false;
 
-	// current token type
+	/** The token type. */
 	public TokenType tokenType = TokenType.TT_NULL;
 
-	// previous char
+	/** The previous char. */
 	public int previousChar;
 
-	// constructor
-	public TokenizerImpl(Reader r) {
-		reader = r;
+	/**
+	 * Instantiates a new tokenizer impl.
+	 *
+	 * @param reader
+	 *            the reader
+	 */
+	public TokenizerImpl(Reader reader) {
+		this.reader = reader;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see Service.MySQLServiceImpl.Tokenizer#pushBack()
+	 * @see main.java.insert2Update.service.Tokenizer#getSval()
+	 */
+	@Override
+	public String getSval() {
+		return sval;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see main.java.insert2Update.service.Tokenizer#pushBack()
 	 */
 	@Override
 	public void pushBack() {
@@ -58,7 +97,7 @@ public class TokenizerImpl implements Tokenizer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see Service.MySQLServiceImpl.Tokenizer#nextToken()
+	 * @see main.java.insert2Update.service.Tokenizer#nextToken()
 	 */
 	@Override
 	public TokenType nextToken() throws IOException {
@@ -125,11 +164,14 @@ public class TokenizerImpl implements Tokenizer {
 		case DOT:
 			tokenType = TokenType.TT_DOT;
 			break;
-		case APICES:
+		case APEX:
 			tokenType = TokenType.TT_APEX;
 			break;
-		case APICES2:
+		case QUOTES:
 			tokenType = TokenType.TT_QUOTES;
+			break;
+		case BACKSLASH:
+			tokenType = TokenType.TT_BACKSLASH;
 			break;
 		default:
 			// current char is not a syntax constant
@@ -183,17 +225,19 @@ public class TokenizerImpl implements Tokenizer {
 		return tokenType;
 	}
 
+	/**
+	 * Checks if is stopping char.
+	 *
+	 * @param currentChar
+	 *            the current char
+	 * @return true, if is stopping char
+	 */
 	private boolean isStoppingChar(int currentChar) {
 		for (int i : stopChars) {
 			if (i == currentChar)
 				return true;
 		}
 		return false;
-	}
-
-	@Override
-	public String getSval() {
-		return sval;
 	}
 
 }

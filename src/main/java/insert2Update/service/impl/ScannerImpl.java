@@ -1,20 +1,44 @@
+/**************************************************************************
+* 
+* Created on  : 8-apr-2017  
+* Author      : Giampiero Di Paolo
+* Project Name: Insert2Update  
+* Package     : main.java.insert2Update.service.impl
+* File Name   : ScannerImpl.java
+* 
+***************************************************************************/
 package main.java.insert2Update.service.impl;
 
 import java.io.IOException;
 import java.io.Reader;
 
+import main.java.insert2Update.service.ItemType;
 import main.java.insert2Update.service.Scanner;
 import main.java.insert2Update.service.Tokenizer;
-import main.java.insert2Update.service.ItemType;
 
+/**
+ * The Class ScannerImpl.
+ */
 public class ScannerImpl implements Scanner {
-	
+
+	/** The input. */
 	public Tokenizer input;
 
-	public ScannerImpl(Reader r) {
-		input = new TokenizerImpl(r);
+	/**
+	 * Instantiates a new scanner impl.
+	 *
+	 * @param reader
+	 *            the reader
+	 */
+	public ScannerImpl(Reader reader) {
+		input = new TokenizerImpl(reader);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see main.java.insert2Update.service.Scanner#nextToken()
+	 */
 	@Override
 	public ItemType nextToken() {
 		try {
@@ -47,6 +71,11 @@ public class ScannerImpl implements Scanner {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see main.java.insert2Update.service.Scanner#getInput()
+	 */
 	@Override
 	public Tokenizer getInput() {
 		return input;

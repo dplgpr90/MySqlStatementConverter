@@ -1,3 +1,12 @@
+/**************************************************************************
+* 
+* Created on  : 8-apr-2017  
+* Author      : Giampiero Di Paolo
+* Project Name: Insert2Update  
+* Package     : main.java.insert2Update.service.impl
+* File Name   : CoreLogicImpl.java
+* 
+***************************************************************************/
 package main.java.insert2Update.service.impl;
 
 import java.io.Reader;
@@ -10,18 +19,39 @@ import main.java.insert2Update.model.Statement;
 import main.java.insert2Update.model.Target;
 import main.java.insert2Update.model.Update;
 import main.java.insert2Update.model.Value;
-import main.java.insert2Update.service.Scanner;
 import main.java.insert2Update.service.ItemType;
+import main.java.insert2Update.service.Scanner;
 
+/**
+ * The Class CoreLogicImpl.
+ */
 public class CoreLogicImpl {
 
+	/** The scanner. */
 	private Scanner scanner;
+
+	/** The token. */
 	private ItemType token;
 
-	public CoreLogicImpl(Reader r) {
-		scanner = new ScannerImpl(r);
+	/**
+	 * Instantiates a new core logic impl.
+	 *
+	 * @param reader
+	 *            the reader
+	 */
+	public CoreLogicImpl(Reader reader) {
+		scanner = new ScannerImpl(reader);
 	}
 
+	/**
+	 * Parses the.
+	 *
+	 * @param sourceClass
+	 *            the source class
+	 * @param targetClass
+	 *            the target class
+	 * @return the statement
+	 */
 	public Statement parse(Class<?> sourceClass, Class<?> targetClass) {
 		if (sourceClass.equals(Insert.class)) {
 			return insert2Statement(targetClass);
@@ -29,6 +59,13 @@ public class CoreLogicImpl {
 		return null;
 	}
 
+	/**
+	 * Insert 2 statement.
+	 *
+	 * @param targetClass
+	 *            the target class
+	 * @return the statement
+	 */
 	private Statement insert2Statement(Class<?> targetClass) {
 		if (targetClass.equals(Update.class)) {
 			return insert2Update();
@@ -36,22 +73,31 @@ public class CoreLogicImpl {
 		return null;
 	}
 
+	/**
+	 * Insert 2 update.
+	 *
+	 * @return the update
+	 */
 	private Update insert2Update() {
 		nextToken();
 		// TODO replace insert into
 		Target target = target();
 		Column[] cols = columns();
 		checkKeywordByName("values");
-		
+
 		// TODO gestire caratteri tt in possibile valore
 		Value[] vals = values();
-		
-		
+
 		Update table = new Update(target, cols, vals);
 		expect(ItemType.SEMICOLON);
 		return table;
 	}
 
+	/**
+	 * Target.
+	 *
+	 * @return the target
+	 */
 	private Target target() {
 		String schema = "";
 		String table = "";
@@ -75,6 +121,11 @@ public class CoreLogicImpl {
 		return target;
 	}
 
+	/**
+	 * Columns.
+	 *
+	 * @return the column[]
+	 */
 	private Column[] columns() {
 		List<Column> cols = new ArrayList<Column>();
 		expect(ItemType.OPEN_BRACKET);
@@ -88,6 +139,11 @@ public class CoreLogicImpl {
 		return cols.toArray(new Column[0]);
 	}
 
+	/**
+	 * Column.
+	 *
+	 * @return the column
+	 */
 	private Column column() {
 		String val = "";
 		if (token == ItemType.TEXT) {
@@ -98,6 +154,11 @@ public class CoreLogicImpl {
 		return col;
 	}
 
+	/**
+	 * Values.
+	 *
+	 * @return the value[]
+	 */
 	private Value[] values() {
 		List<Value> vals = new ArrayList<Value>();
 		expect(ItemType.OPEN_BRACKET);
@@ -111,6 +172,11 @@ public class CoreLogicImpl {
 		return vals.toArray(new Value[0]);
 	}
 
+	/**
+	 * Value.
+	 *
+	 * @return the value
+	 */
 	private Value value() {
 		String sval = "";
 		if (token == ItemType.TEXT) {
@@ -121,6 +187,12 @@ public class CoreLogicImpl {
 		return val;
 	}
 
+	/**
+	 * Check keyword by name.
+	 *
+	 * @param keyword
+	 *            the keyword
+	 */
 	private void checkKeywordByName(String keyword) {
 		if (!keyword.equalsIgnoreCase(scanner.getInput().getSval().trim())) {
 			error("Syntax error: '" + scanner.getInput().getSval() + "'.");
@@ -128,16 +200,31 @@ public class CoreLogicImpl {
 		expect(ItemType.TEXT);
 	}
 
+	/**
+	 * Expect.
+	 *
+	 * @param t
+	 *            the t
+	 */
 	private void expect(ItemType t) {
 		if (token != t)
 			error("Syntax error: expected token Type." + t);
 		nextToken();
 	}
 
+	/**
+	 * Next token.
+	 */
 	private void nextToken() {
 		token = scanner.nextToken();
 	}
 
+	/**
+	 * Error.
+	 *
+	 * @param msg
+	 *            the msg
+	 */
 	private void error(String msg) {
 		System.err.println(msg);
 		System.exit(1);

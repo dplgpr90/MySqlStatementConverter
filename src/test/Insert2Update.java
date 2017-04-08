@@ -1,4 +1,13 @@
-package main.test;
+/**************************************************************************
+* 
+* Created on  : 8-apr-2017  
+* Author      : Giampiero Di Paolo
+* Project Name: Insert2Update  
+* Package     : test
+* File Name   : Insert2Update.java
+* 
+***************************************************************************/
+package test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,11 +18,18 @@ import main.java.insert2Update.service.Parser;
 import main.java.insert2Update.service.impl.ParserImpl;
 
 /**
- * @author Giampiero Di Paolo
- *
+ * The Class Insert2Update.
  */
 public class Insert2Update {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args
+	 *            the arguments
+	 * @throws FileNotFoundException
+	 *             the file not found exception
+	 */
 	public static void main(String[] args) throws FileNotFoundException {
 		// check args
 		if (args.length == 2) {
@@ -27,9 +43,9 @@ public class Insert2Update {
 
 			Reader r = new FileReader(inputFile);
 			Parser p = new ParserImpl();
-			
+
 			Statement u = p.insert2Update(r);
-			
+
 			System.out.println(u);
 
 		} else {
