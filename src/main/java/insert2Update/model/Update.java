@@ -45,14 +45,15 @@ public class Update implements Statement {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		String res = UPDATE + " " + target + SET + " ";
+		String res = Keyword.UPDATE.value() + Keyword.SPACE.value() + target + Keyword.SPACE.value()
+				+ Keyword.SET.value() + Keyword.SPACE.value();
 		for (int i = 0; i < cols.length; i++) {
 			if (i > 0) {
-				res += ", ";
+				res += Keyword.COMMA.value() + Keyword.SPACE.value();
 			}
-			res += cols[i] + " = " + vals[i];
+			res += cols[i] + Keyword.SPACE.value() + Keyword.EQUALS.value() + Keyword.SPACE.value() + vals[i];
 		}
-		res += ";";
+		res += Keyword.SEMICOLON.value();
 		return res;
 	}
 }

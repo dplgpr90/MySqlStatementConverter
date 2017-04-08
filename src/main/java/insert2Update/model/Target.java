@@ -42,7 +42,7 @@ public class Target {
 		if (schema == null || schema.equals("")) {
 			return table;
 		}
-		return schema + "." + table;
+		return schema + Keyword.DOT.value() + table;
 	}
 
 }

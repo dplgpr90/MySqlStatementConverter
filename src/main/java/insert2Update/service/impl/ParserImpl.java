@@ -9,6 +9,7 @@
 ***************************************************************************/
 package main.java.insert2Update.service.impl;
 
+import java.io.IOException;
 import java.io.Reader;
 
 import main.java.insert2Update.model.Insert;
@@ -39,9 +40,9 @@ public class ParserImpl implements Parser {
 	 * @see main.java.insert2Update.service.Parser#insert2Update(java.io.Reader)
 	 */
 	@Override
-	public Statement insert2Update(Reader r) {
-		CoreLogicImpl h = new CoreLogicImpl(r);
-		return h.parse(Insert.class, Update.class);
+	public Statement[] insert2Update(Reader reader) throws IOException {
+		Converter c = new Converter(reader);
+		return c.parse(Insert.class, Update.class);
 	}
 
 }

@@ -9,6 +9,7 @@
 ***************************************************************************/
 package main.java.insert2Update.service;
 
+import java.io.IOException;
 import java.io.Reader;
 
 import main.java.insert2Update.model.Statement;
@@ -23,8 +24,10 @@ public interface Parser {
 	 *
 	 * @param reader
 	 *            the reader
-	 * @return the statement
+	 * @return the statement[]
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public Statement insert2Update(Reader reader);
+	public Statement[] insert2Update(Reader reader) throws IOException;
 
 }

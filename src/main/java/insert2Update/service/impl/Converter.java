@@ -4,17 +4,19 @@
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service.impl
-* File Name   : CoreLogicImpl.java
+* File Name   : Converter.java
 * 
 ***************************************************************************/
 package main.java.insert2Update.service.impl;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import main.java.insert2Update.model.Column;
 import main.java.insert2Update.model.Insert;
+import main.java.insert2Update.model.Keyword;
 import main.java.insert2Update.model.Statement;
 import main.java.insert2Update.model.Target;
 import main.java.insert2Update.model.Update;
@@ -23,9 +25,12 @@ import main.java.insert2Update.service.ItemType;
 import main.java.insert2Update.service.Scanner;
 
 /**
- * The Class CoreLogicImpl.
+ * The Class Converter.
  */
-public class CoreLogicImpl {
+public class Converter {
+
+	/** The reader. */
+	private Reader reader;
 
 	/** The scanner. */
 	private Scanner scanner;
@@ -39,8 +44,9 @@ public class CoreLogicImpl {
 	 * @param reader
 	 *            the reader
 	 */
-	public CoreLogicImpl(Reader reader) {
-		scanner = new ScannerImpl(reader);
+	public Converter(Reader reader) {
+		this.reader = reader;
+		this.scanner = new ScannerImpl(reader);
 	}
 
 	/**
@@ -51,8 +57,9 @@ public class CoreLogicImpl {
 	 * @param targetClass
 	 *            the target class
 	 * @return the statement
+	 * @throws IOException
 	 */
-	public Statement parse(Class<?> sourceClass, Class<?> targetClass) {
+	public Statement[] parse(Class<?> sourceClass, Class<?> targetClass) throws IOException {
 		if (sourceClass.equals(Insert.class)) {
 			return insert2Statement(targetClass);
 		}
@@ -65,8 +72,11 @@ public class CoreLogicImpl {
 	 * @param targetClass
 	 *            the target class
 	 * @return the statement
+	 * @throws IOException
 	 */
-	private Statement insert2Statement(Class<?> targetClass) {
+	private Statement[] insert2Statement(Class<?> targetClass) throws IOException {
+		// replace initial insert into keywords
+		consumeInitialKeywords(reader, Insert.class);
 		if (targetClass.equals(Update.class)) {
 			return insert2Update();
 		}
@@ -78,19 +88,25 @@ public class CoreLogicImpl {
 	 *
 	 * @return the update
 	 */
-	private Update insert2Update() {
+	private Update[] insert2Update() {
 		nextToken();
-		// TODO replace insert into
 		Target target = target();
 		Column[] cols = columns();
-		checkKeywordByName("values");
-
-		// TODO gestire caratteri tt in possibile valore
-		Value[] vals = values();
-
-		Update table = new Update(target, cols, vals);
+		checkKeywordByName(Keyword.VALUES.value());
+		if (token == ItemType.SEMICOLON) {
+			error("Syntax error: values not found.");
+		}
+		List<Update> returnStatement = new ArrayList<Update>(0);
+		while (token != ItemType.SEMICOLON) {
+			Value[] vals = values();
+			Update update = new Update(target, cols, vals);
+			returnStatement.add(update);
+			if (token != ItemType.SEMICOLON) {
+				expect(ItemType.COMMA);
+			}
+		}
 		expect(ItemType.SEMICOLON);
-		return table;
+		return returnStatement.toArray(new Update[0]);
 	}
 
 	/**
@@ -103,7 +119,7 @@ public class CoreLogicImpl {
 		String table = "";
 
 		if (token == ItemType.TEXT) {
-			table = scanner.getInput().getSval();
+			table = scanner.getInput().getSval().trim();
 			expect(ItemType.TEXT);
 		}
 
@@ -112,7 +128,7 @@ public class CoreLogicImpl {
 
 			if (token == ItemType.TEXT) {
 				schema = table;
-				table = scanner.getInput().getSval();
+				table = scanner.getInput().getSval().trim();
 				expect(ItemType.TEXT);
 			}
 		}
@@ -147,7 +163,7 @@ public class CoreLogicImpl {
 	private Column column() {
 		String val = "";
 		if (token == ItemType.TEXT) {
-			val = scanner.getInput().getSval();
+			val = scanner.getInput().getSval().trim();
 			expect(ItemType.TEXT);
 		}
 		Column col = new Column(val);
@@ -162,6 +178,9 @@ public class CoreLogicImpl {
 	private Value[] values() {
 		List<Value> vals = new ArrayList<Value>();
 		expect(ItemType.OPEN_BRACKET);
+
+		// TODO gestire caratteri tt in possibile valore
+
 		while (token != ItemType.CLOSED_BRACKET) {
 			vals.add(value());
 			if (token != ItemType.CLOSED_BRACKET) {
@@ -180,7 +199,7 @@ public class CoreLogicImpl {
 	private Value value() {
 		String sval = "";
 		if (token == ItemType.TEXT) {
-			sval = scanner.getInput().getSval();
+			sval = scanner.getInput().getSval().trim();
 			expect(ItemType.TEXT);
 		}
 		Value val = new Value(sval);
@@ -195,9 +214,50 @@ public class CoreLogicImpl {
 	 */
 	private void checkKeywordByName(String keyword) {
 		if (!keyword.equalsIgnoreCase(scanner.getInput().getSval().trim())) {
-			error("Syntax error: '" + scanner.getInput().getSval() + "'.");
+			error("Syntax error: '" + scanner.getInput().getSval().trim() + "'.");
 		}
 		expect(ItemType.TEXT);
+	}
+
+	/**
+	 * Consume initial keywords.
+	 *
+	 * @param reader
+	 *            the reader
+	 * @param inputClass
+	 *            the input class
+	 * @return the reader
+	 * @throws IOException
+	 */
+	private void consumeInitialKeywords(Reader reader, Class<?> inputClass) throws IOException {
+		String keywords = getKeywordsString(inputClass);
+		int readChar = -1;
+		int charIndex = 0;
+		while ((readChar = reader.read()) != -1 && charIndex < keywords.length()) {
+			if (readChar > ' ') {
+				// white spaces are consumed
+				if (Character.toUpperCase(keywords.charAt(charIndex)) == Character.toUpperCase(readChar)) {
+					charIndex++;
+				} else {
+					error("Syntax error - expected keywords: " + Keyword.INSERT.value() + Keyword.SPACE.value()
+							+ Keyword.INTO.value());
+				}
+			}
+		}
+	}
+
+	/**
+	 * Gets the keywords string.
+	 *
+	 * @param inputClass
+	 *            the input class
+	 * @return the keywords string
+	 */
+	private String getKeywordsString(Class<?> inputClass) {
+		if (inputClass.equals(Insert.class)) {
+			return Keyword.INSERT.value() + Keyword.INTO.value();
+		}
+		return null;
 	}
 
 	/**
@@ -208,7 +268,7 @@ public class CoreLogicImpl {
 	 */
 	private void expect(ItemType t) {
 		if (token != t)
-			error("Syntax error: expected token Type." + t);
+			error("Syntax error - expected token Type: " + t);
 		nextToken();
 	}
 
