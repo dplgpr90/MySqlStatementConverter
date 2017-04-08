@@ -26,7 +26,7 @@ public class ParserImpl implements Parser {
 
 	@Override
 	public Statement insert2Update(Reader r) {
-		Helper h = new Helper(r);
+		CoreLogicImpl h = new CoreLogicImpl(r);
 		return h.parse(Insert.class, Update.class);
 	}
 

@@ -11,14 +11,14 @@ import main.java.insert2Update.model.Target;
 import main.java.insert2Update.model.Update;
 import main.java.insert2Update.model.Value;
 import main.java.insert2Update.service.Scanner;
-import main.java.insert2Update.service.Type;
+import main.java.insert2Update.service.ItemType;
 
-public class Helper {
+public class CoreLogicImpl {
 
 	private Scanner scanner;
-	private Type token;
+	private ItemType token;
 
-	public Helper(Reader r) {
+	public CoreLogicImpl(Reader r) {
 		scanner = new ScannerImpl(r);
 	}
 
@@ -48,7 +48,7 @@ public class Helper {
 		
 		
 		Update table = new Update(target, cols, vals);
-		expect(Type.SEMICOLON);
+		expect(ItemType.SEMICOLON);
 		return table;
 	}
 
@@ -56,18 +56,18 @@ public class Helper {
 		String schema = "";
 		String table = "";
 
-		if (token == Type.TEXT) {
+		if (token == ItemType.TEXT) {
 			table = scanner.getInput().getSval();
-			expect(Type.TEXT);
+			expect(ItemType.TEXT);
 		}
 
-		if (token == Type.DOT) {
-			expect(Type.DOT);
+		if (token == ItemType.DOT) {
+			expect(ItemType.DOT);
 
-			if (token == Type.TEXT) {
+			if (token == ItemType.TEXT) {
 				schema = table;
 				table = scanner.getInput().getSval();
-				expect(Type.TEXT);
+				expect(ItemType.TEXT);
 			}
 		}
 
@@ -77,22 +77,22 @@ public class Helper {
 
 	private Column[] columns() {
 		List<Column> cols = new ArrayList<Column>();
-		expect(Type.OPEN_BRACKET);
-		while (token != Type.CLOSED_BRACKET) {
+		expect(ItemType.OPEN_BRACKET);
+		while (token != ItemType.CLOSED_BRACKET) {
 			cols.add(column());
-			if (token != Type.CLOSED_BRACKET) {
-				expect(Type.COMMA);
+			if (token != ItemType.CLOSED_BRACKET) {
+				expect(ItemType.COMMA);
 			}
 		}
-		expect(Type.CLOSED_BRACKET);
+		expect(ItemType.CLOSED_BRACKET);
 		return cols.toArray(new Column[0]);
 	}
 
 	private Column column() {
 		String val = "";
-		if (token == Type.TEXT) {
+		if (token == ItemType.TEXT) {
 			val = scanner.getInput().getSval();
-			expect(Type.TEXT);
+			expect(ItemType.TEXT);
 		}
 		Column col = new Column(val);
 		return col;
@@ -100,22 +100,22 @@ public class Helper {
 
 	private Value[] values() {
 		List<Value> vals = new ArrayList<Value>();
-		expect(Type.OPEN_BRACKET);
-		while (token != Type.CLOSED_BRACKET) {
+		expect(ItemType.OPEN_BRACKET);
+		while (token != ItemType.CLOSED_BRACKET) {
 			vals.add(value());
-			if (token != Type.CLOSED_BRACKET) {
-				expect(Type.COMMA);
+			if (token != ItemType.CLOSED_BRACKET) {
+				expect(ItemType.COMMA);
 			}
 		}
-		expect(Type.CLOSED_BRACKET);
+		expect(ItemType.CLOSED_BRACKET);
 		return vals.toArray(new Value[0]);
 	}
 
 	private Value value() {
 		String sval = "";
-		if (token == Type.TEXT) {
+		if (token == ItemType.TEXT) {
 			sval = scanner.getInput().getSval();
-			expect(Type.TEXT);
+			expect(ItemType.TEXT);
 		}
 		Value val = new Value(sval);
 		return val;
@@ -125,10 +125,10 @@ public class Helper {
 		if (!keyword.equalsIgnoreCase(scanner.getInput().getSval().trim())) {
 			error("Syntax error: '" + scanner.getInput().getSval() + "'.");
 		}
-		expect(Type.TEXT);
+		expect(ItemType.TEXT);
 	}
 
-	private void expect(Type t) {
+	private void expect(ItemType t) {
 		if (token != t)
 			error("Syntax error: expected token Type." + t);
 		nextToken();

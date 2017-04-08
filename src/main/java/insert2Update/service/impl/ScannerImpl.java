@@ -5,7 +5,7 @@ import java.io.Reader;
 
 import main.java.insert2Update.service.Scanner;
 import main.java.insert2Update.service.Tokenizer;
-import main.java.insert2Update.service.Type;
+import main.java.insert2Update.service.ItemType;
 
 public class ScannerImpl implements Scanner {
 	
@@ -16,34 +16,34 @@ public class ScannerImpl implements Scanner {
 	}
 
 	@Override
-	public Type nextToken() {
+	public ItemType nextToken() {
 		try {
 			switch (input.nextToken()) {
 			case TT_EOF:
-				return Type.EOF;
+				return ItemType.EOF;
 			case TT_TEXT:
-				return Type.TEXT;
+				return ItemType.TEXT;
 			case TT_CLOSED_BRACKET:
-				return Type.CLOSED_BRACKET;
+				return ItemType.CLOSED_BRACKET;
 			case TT_OPEN_BRACKET:
-				return Type.OPEN_BRACKET;
+				return ItemType.OPEN_BRACKET;
 			case TT_COMMA:
-				return Type.COMMA;
+				return ItemType.COMMA;
 			case TT_NULL:
-				return Type.NULL;
+				return ItemType.NULL;
 			case TT_SEMICOLON:
-				return Type.SEMICOLON;
+				return ItemType.SEMICOLON;
 			case TT_DOT:
-				return Type.DOT;
-			case TT_APICES:
-				return Type.APICES;
-			case TT_APICES2:
-				return Type.APICES2;
+				return ItemType.DOT;
+			case TT_APEX:
+				return ItemType.APEX;
+			case TT_QUOTES:
+				return ItemType.QUOTES;
 			default:
-				return Type.OTHER;
+				return ItemType.OTHER;
 			}
 		} catch (IOException ex) {
-			return Type.EOF;
+			return ItemType.EOF;
 		}
 	}
 

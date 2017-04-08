@@ -126,10 +126,10 @@ public class TokenizerImpl implements Tokenizer {
 			tokenType = TokenType.TT_DOT;
 			break;
 		case APICES:
-			tokenType = TokenType.TT_APICES;
+			tokenType = TokenType.TT_APEX;
 			break;
 		case APICES2:
-			tokenType = TokenType.TT_APICES2;
+			tokenType = TokenType.TT_QUOTES;
 			break;
 		default:
 			// current char is not a syntax constant
