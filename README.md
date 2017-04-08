@@ -1,7 +1,9 @@
 # MySqlStatementConverter
+
 MySql statement converter. 
 
-Up to now: insert to update.
+Up to now: insert2update.
+
 
 
 TODO:
