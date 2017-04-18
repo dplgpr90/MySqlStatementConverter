@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 18-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service.impl
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.insert2Update.model.Column;
+import main.java.insert2Update.model.Condition;
 import main.java.insert2Update.model.Insert;
 import main.java.insert2Update.model.Keyword;
 import main.java.insert2Update.model.Statement;
@@ -38,13 +39,19 @@ public class Converter {
 	/** The token. */
 	private ItemType token;
 
+	/** The where condition. */
+	private Condition[] whereCondition;
+
 	/**
 	 * Instantiates a new core logic impl.
 	 *
 	 * @param reader
 	 *            the reader
+	 * @param whereCondition
+	 *            the where condition
 	 */
-	public Converter(Reader reader) {
+	public Converter(Reader reader, Condition[] whereCondition) {
+		this.whereCondition = whereCondition;
 		this.reader = reader;
 		this.scanner = new ScannerImpl(reader);
 	}
@@ -99,7 +106,7 @@ public class Converter {
 		List<Update> returnStatement = new ArrayList<Update>(0);
 		while (token != ItemType.SEMICOLON) {
 			Value[] vals = values();
-			Update update = new Update(target, cols, vals);
+			Update update = new Update(target, cols, vals, whereCondition);
 			returnStatement.add(update);
 			if (token != ItemType.SEMICOLON) {
 				expect(ItemType.COMMA);
@@ -197,6 +204,9 @@ public class Converter {
 	 * @return the value
 	 */
 	private Value value() {
+
+		// TODO gestire virgolette apici in valori stringa
+
 		String sval = "";
 		if (token == ItemType.TEXT) {
 			sval = scanner.getInput().getSval().trim();

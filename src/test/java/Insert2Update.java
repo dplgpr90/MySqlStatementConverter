@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 18-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : test.java
@@ -16,8 +16,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
+import main.java.insert2Update.model.Column;
+import main.java.insert2Update.model.Condition;
+import main.java.insert2Update.model.Operator;
 import main.java.insert2Update.model.Statement;
 import main.java.insert2Update.service.impl.ParserImpl;
 
@@ -39,6 +44,10 @@ public class Insert2Update {
 	private static final String outputFile = testResourcePath + "converted_" + Calendar.getInstance().getTimeInMillis()
 			+ ".sql";
 
+	/** The Constant listaWhere. */
+	private static final List<Condition> listaWhere = Arrays
+			.asList(new Condition(new Column("id"), Operator.EQUALS, null));
+
 	/**
 	 * The main method.
 	 *
@@ -59,7 +68,8 @@ public class Insert2Update {
 
 		Statement[] resultStatements = new Statement[0];
 		try {
-			resultStatements = new ParserImpl().insert2Update(reader);
+			Condition[] whereCondition = listaWhere.toArray(new Condition[0]);
+			resultStatements = new ParserImpl().insert2Update(reader, whereCondition);
 		} catch (IOException ioe) {
 			System.err.println("CONVERTER ERROR! Unexpected error during coversion.");
 			System.exit(1);

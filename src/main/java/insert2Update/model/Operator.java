@@ -4,46 +4,30 @@
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.model
-* File Name   : Keyword.java
+* File Name   : Operator.java
 * 
 ***************************************************************************/
 package main.java.insert2Update.model;
 
 /**
- * The Enum Keyword.
+ * The Enum Operator.
  */
-public enum Keyword {
+public enum Operator {
 
-	/** The open bracket. */
-	OPEN_BRACKET("("),
-	/** The closed bracket. */
-	CLOSED_BRACKET(")"),
-	/** The semicolon. */
-	SEMICOLON(";"),
-	/** The comma. */
-	COMMA(","),
-	/** The update. */
-	UPDATE("UPDATE"),
-	/** The set. */
-	SET("SET"),
-	/** The insert. */
-	INSERT("INSERT"),
-	/** The into. */
-	INTO("INTO"),
-	/** The space. */
-	SPACE(" "),
+	/** The like. */
+	LIKE("LIKE"),
 	/** The equals. */
 	EQUALS("="),
-	/** The dot. */
-	DOT("."),
-	/** The values. */
-	VALUES("VALUES"),
-	/** The where. */
-	WHERE("WHERE"),
-	/** The true condition. */
-	TRUE_CONDITION("1=1"),
-	/** The percentage. */
-	PERCENTAGE("%");
+	/** The not equals. */
+	NOT_EQUALS("!="),
+	/** The greather than. */
+	GREATHER_THAN(">"),
+	/** The lesser than. */
+	LESSER_THAN("<"),
+	/** The greather than equals. */
+	GREATHER_THAN_EQUALS(">="),
+	/** The lesser than equals. */
+	LESSER_THAN_EQUALS("<=");
 
 	/** The value. */
 	private final String value;
@@ -54,7 +38,7 @@ public enum Keyword {
 	 * @param value
 	 *            the value
 	 */
-	private Keyword(String value) {
+	private Operator(String value) {
 		this.value = value;
 	}
 

@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 18-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.model
@@ -12,10 +12,10 @@ package main.java.insert2Update.model;
 /**
  * The Class Value.
  */
-public class Value {
+public class Value<T> {
 
 	/** The val. */
-	public String value;
+	public T value;
 
 	/**
 	 * Instantiates a new value.
@@ -23,7 +23,7 @@ public class Value {
 	 * @param value
 	 *            the value
 	 */
-	public Value(String value) {
+	public Value(T value) {
 		this.value = value;
 	}
 
@@ -33,6 +33,15 @@ public class Value {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return value;
+		return value.toString();
+	}
+
+	/**
+	 * Format for like left right.
+	 *
+	 * @return the string
+	 */
+	public String formatForLikeLeftRight() {
+		return Keyword.PERCENTAGE.value() + this.value.toString() + Keyword.PERCENTAGE.value();
 	}
 }

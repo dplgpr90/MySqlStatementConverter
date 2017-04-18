@@ -4,46 +4,20 @@
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.model
-* File Name   : Keyword.java
+* File Name   : LogicOperator.java
 * 
 ***************************************************************************/
 package main.java.insert2Update.model;
 
 /**
- * The Enum Keyword.
+ * The Enum LogicOperator.
  */
-public enum Keyword {
+public enum LogicOperator {
 
-	/** The open bracket. */
-	OPEN_BRACKET("("),
-	/** The closed bracket. */
-	CLOSED_BRACKET(")"),
-	/** The semicolon. */
-	SEMICOLON(";"),
-	/** The comma. */
-	COMMA(","),
-	/** The update. */
-	UPDATE("UPDATE"),
-	/** The set. */
-	SET("SET"),
-	/** The insert. */
-	INSERT("INSERT"),
 	/** The into. */
-	INTO("INTO"),
+	AND("AND"),
 	/** The space. */
-	SPACE(" "),
-	/** The equals. */
-	EQUALS("="),
-	/** The dot. */
-	DOT("."),
-	/** The values. */
-	VALUES("VALUES"),
-	/** The where. */
-	WHERE("WHERE"),
-	/** The true condition. */
-	TRUE_CONDITION("1=1"),
-	/** The percentage. */
-	PERCENTAGE("%");
+	OR("OR");
 
 	/** The value. */
 	private final String value;
@@ -54,7 +28,7 @@ public enum Keyword {
 	 * @param value
 	 *            the value
 	 */
-	private Keyword(String value) {
+	private LogicOperator(String value) {
 		this.value = value;
 	}
 

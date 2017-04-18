@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 18-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.model
@@ -34,5 +34,23 @@ public class Column {
 	 */
 	public String toString() {
 		return name;
+	}
+
+	/**
+	 * Equals.
+	 *
+	 * @param column
+	 *            the column
+	 * @return true, if successful
+	 */
+	@Override
+	public boolean equals(Object column) {
+		if (column == null) {
+			return false;
+		}
+		if (column instanceof Column) {
+			return ((Column) column).name.equalsIgnoreCase(this.name);
+		}
+		return false;
 	}
 }

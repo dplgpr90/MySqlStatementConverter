@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 18-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service
@@ -12,6 +12,7 @@ package main.java.insert2Update.service;
 import java.io.IOException;
 import java.io.Reader;
 
+import main.java.insert2Update.model.Condition;
 import main.java.insert2Update.model.Statement;
 
 /**
@@ -24,10 +25,12 @@ public interface Parser {
 	 *
 	 * @param reader
 	 *            the reader
+	 * @param whereCondition
+	 *            the where condition
 	 * @return the statement[]
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public Statement[] insert2Update(Reader reader) throws IOException;
+	public Statement[] insert2Update(Reader reader, Condition[] whereCondition) throws IOException;
 
 }

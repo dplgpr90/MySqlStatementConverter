@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 18-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service.impl
@@ -12,6 +12,7 @@ package main.java.insert2Update.service.impl;
 import java.io.IOException;
 import java.io.Reader;
 
+import main.java.insert2Update.model.Condition;
 import main.java.insert2Update.model.Insert;
 import main.java.insert2Update.model.Statement;
 import main.java.insert2Update.model.Update;
@@ -37,11 +38,12 @@ public class ParserImpl implements Parser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see main.java.insert2Update.service.Parser#insert2Update(java.io.Reader)
+	 * @see main.java.insert2Update.service.Parser#insert2Update(java.io.Reader,
+	 * main.java.insert2Update.model.Condition[])
 	 */
 	@Override
-	public Statement[] insert2Update(Reader reader) throws IOException {
-		Converter c = new Converter(reader);
+	public Statement[] insert2Update(Reader reader, Condition[] whereCondition) throws IOException {
+		Converter c = new Converter(reader, whereCondition);
 		return c.parse(Insert.class, Update.class);
 	}
 
