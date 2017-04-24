@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 18-apr-2017  
+* Created on  : 24-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.model
@@ -43,7 +43,15 @@ public enum Keyword {
 	/** The true condition. */
 	TRUE_CONDITION("1=1"),
 	/** The percentage. */
-	PERCENTAGE("%");
+	PERCENTAGE("%"),
+	/** The quote. */
+	QUOTE("\""),
+	/** The apex. */
+	APEX("'"),
+	/** The backslash. */
+	BACKSLASH("\\"),
+	/** The new line. */
+	NEW_LINE("\n");
 
 	/** The value. */
 	private final String value;

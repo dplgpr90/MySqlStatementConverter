@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 24-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service
@@ -36,10 +36,12 @@ public interface Tokenizer {
 	/**
 	 * Next token.
 	 *
+	 * @param ignoreWhitespace
+	 *            the ignore whitespace
 	 * @return the type of the token read
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public TokenType nextToken() throws IOException;
+	public TokenType nextToken(boolean ignoreWhitespace) throws IOException;
 
 }

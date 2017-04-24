@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 18-apr-2017  
+* Created on  : 24-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service.impl
@@ -201,16 +201,82 @@ public class Converter {
 	 * @return the value
 	 */
 	private Value value() {
-
-		// TODO gestire caratteri speciali e virgolette apici in valori stringa
-
 		String sval = "";
+
 		if (token == ItemType.TEXT) {
 			sval = scanner.getInput().getSval().trim();
 			expect(ItemType.TEXT);
+			
+			// floating point numbers
+			if(token == ItemType.DOT){
+				sval += scanner.getInput().getSval().trim();
+				expect(ItemType.DOT);
+				sval += scanner.getInput().getSval().trim();
+				expect(ItemType.TEXT);
+			} else 
+			
+			// functions
+			if (token == ItemType.OPEN_BRACKET){
+				sval += scanner.getInput().getSval().trim();
+				expect(ItemType.OPEN_BRACKET);
+				
+				while(token != ItemType.CLOSED_BRACKET){
+					sval += scanner.getInput().getSval().trim();
+					expect(token);
+				}
+				
+				sval += scanner.getInput().getSval().trim();
+				expect(ItemType.CLOSED_BRACKET);
+			}
+			
+		} else {
+			ItemType delimiter = null;
+
+			switch (token) {
+			case QUOTES:
+				delimiter = ItemType.QUOTES;
+				break;
+			case APEX:
+				delimiter = ItemType.APEX;
+				break;
+			default:
+				error("Syntax error - expected token Type: " + ItemType.QUOTES + " or " + ItemType.APEX);
+				break;
+			}
+
+			sval += scanner.getInput().getSval().trim();
+			expect(delimiter);
+			sval += manageStringValue(delimiter);
+			sval += scanner.getInput().getSval().trim();
+			expect(delimiter);
 		}
+
 		Value val = new Value(sval);
 		return val;
+	}
+
+	/**
+	 * Manage string value.
+	 *
+	 * @param endItemType
+	 *            the end item type
+	 * @return the string
+	 */
+	private String manageStringValue(ItemType endItemType) {
+		String sval = "";
+		boolean ignoreItem = false;
+		while (token != endItemType || ignoreItem) {
+			sval += scanner.getInput().getSval();
+			expect(token, false);
+			if (token == ItemType.BACKSLASH) {
+				sval += scanner.getInput().getSval();
+				expect(ItemType.BACKSLASH);
+				ignoreItem = true;
+			} else {
+				ignoreItem = false;
+			}
+		}
+		return sval;
 	}
 
 	/**
@@ -272,6 +338,20 @@ public class Converter {
 	 *
 	 * @param t
 	 *            the t
+	 * @param ignoreWhitespace
+	 *            the ignore whitespace
+	 */
+	private void expect(ItemType t, boolean ignoreWhitespace) {
+		if (token != t)
+			error("Syntax error - expected token Type: " + t);
+		nextToken(ignoreWhitespace);
+	}
+
+	/**
+	 * Expect.
+	 *
+	 * @param t
+	 *            the t
 	 */
 	private void expect(ItemType t) {
 		if (token != t)
@@ -281,9 +361,19 @@ public class Converter {
 
 	/**
 	 * Next token.
+	 *
+	 * @param ignoreWhitespace
+	 *            the ignore whitespace
+	 */
+	private void nextToken(boolean ignoreWhitespace) {
+		token = scanner.nextToken(ignoreWhitespace);
+	}
+
+	/**
+	 * Next token.
 	 */
 	private void nextToken() {
-		token = scanner.nextToken();
+		token = scanner.nextToken(true);
 	}
 
 	/**

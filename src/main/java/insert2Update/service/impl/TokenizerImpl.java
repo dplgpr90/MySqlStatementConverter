@@ -1,6 +1,6 @@
 /**************************************************************************
-*  
-* Created on  : 8-apr-2017
+* 
+* Created on  : 24-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service.impl
@@ -97,10 +97,10 @@ public class TokenizerImpl implements Tokenizer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see main.java.insert2Update.service.Tokenizer#nextToken()
+	 * @see main.java.insert2Update.service.Tokenizer#nextToken(boolean)
 	 */
 	@Override
-	public TokenType nextToken() throws IOException {
+	public TokenType nextToken(boolean ignoreWhitespace) throws IOException {
 		if (isPushBackRequired) {
 			// token of the previous call must be returned
 
@@ -130,7 +130,7 @@ public class TokenizerImpl implements Tokenizer {
 			return tokenType;
 		}
 
-		while (currentChar <= ' ') {
+		while (currentChar <= ' ' && ignoreWhitespace) {
 			// ignore whitespace chars
 			currentChar = reader.read();
 
@@ -147,6 +147,9 @@ public class TokenizerImpl implements Tokenizer {
 
 		// chars read counter
 		int i = 0;
+
+		// insert current char into the buffer
+		charsReadBuffer[i++] = (char) currentChar;
 
 		switch (currentChar) {
 		case COMMA:
@@ -176,9 +179,6 @@ public class TokenizerImpl implements Tokenizer {
 		default:
 			// current char is not a syntax constant
 			tokenType = TokenType.TT_TEXT;
-
-			// insert current char into the buffer
-			charsReadBuffer[i++] = (char) currentChar;
 
 			// read next char
 			currentChar = reader.read();
@@ -213,13 +213,14 @@ public class TokenizerImpl implements Tokenizer {
 			// set previous char to current char
 			previousChar = currentChar;
 
-			// copy buffer content (chars read) into sval
-			sval = String.copyValueOf(charsReadBuffer, 0, i);
-
-			// remove leading and trailing whitespace
-			sval.trim();
 			break;
 		}
+
+		// copy buffer content (chars read) into sval
+		sval = String.copyValueOf(charsReadBuffer, 0, i);
+
+		// remove leading and trailing whitespace
+		sval.trim();
 
 		// return the type of the token read
 		return tokenType;

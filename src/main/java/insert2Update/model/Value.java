@@ -12,10 +12,10 @@ package main.java.insert2Update.model;
 /**
  * The Class Value.
  */
-public class Value<T> {
+public class Value {
 
 	/** The val. */
-	public T value;
+	public String value;
 
 	/**
 	 * Instantiates a new value.
@@ -23,7 +23,7 @@ public class Value<T> {
 	 * @param value
 	 *            the value
 	 */
-	public Value(T value) {
+	public Value(String value) {
 		this.value = value;
 	}
 
@@ -42,6 +42,10 @@ public class Value<T> {
 	 * @return the string
 	 */
 	public String formatForLikeLeftRight() {
-		return Keyword.PERCENTAGE.value() + this.value.toString() + Keyword.PERCENTAGE.value();
+		String string = this.value.toString().substring(1, this.value.toString().length() - 1);
+		String firstChar = this.value.toString().substring(0, 1);
+		String lastChar = this.value.toString().substring(this.value.toString().length() - 1,
+				this.value.toString().length());
+		return firstChar + Keyword.PERCENTAGE.value() + string + Keyword.PERCENTAGE.value() + lastChar;
 	}
 }

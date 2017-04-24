@@ -1,9 +1,3 @@
-insert into mgm.tabella (id, nome, cognome) values (1,2,3)
-,(1,2,3)
-,(21,22,23)
-,(31,32,33)
-,(41,42,43)
-,(51,52,53)
-,(61,62,63)
-,(71,72,73)
-,(81,82,83);
+insert into CM_INTERFACCIA_DOCUMENTO(ID_DOCUMENTO, COD_DOCUMENTO, DATA_ULTIMA_MODIFICA) 
+values
+(1, "01", DATE("2017-01-31")),(2, "02", DATE("2017-03-31")),(3, "03", DATE("2017-09-31")),(4, "04", DATE("2017-12-31"));

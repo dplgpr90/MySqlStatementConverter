@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 24-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service.impl
@@ -37,12 +37,13 @@ public class ScannerImpl implements Scanner {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see main.java.insert2Update.service.Scanner#nextToken()
+	 * @see main.java.insert2Update.service.Scanner#nextToken(boolean)
 	 */
 	@Override
-	public ItemType nextToken() {
+	public ItemType nextToken(boolean ignoreWhitespace) {
 		try {
-			switch (input.nextToken()) {
+			TokenType token = input.nextToken(ignoreWhitespace);
+			switch (token) {
 			case TT_EOF:
 				return ItemType.EOF;
 			case TT_TEXT:
@@ -63,7 +64,10 @@ public class ScannerImpl implements Scanner {
 				return ItemType.APEX;
 			case TT_QUOTES:
 				return ItemType.QUOTES;
+			case TT_BACKSLASH:
+				return ItemType.BACKSLASH;
 			default:
+				System.err.println("Other ItemType: " + token);
 				return ItemType.OTHER;
 			}
 		} catch (IOException ex) {

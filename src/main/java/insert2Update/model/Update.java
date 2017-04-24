@@ -18,7 +18,6 @@ public class Update implements Statement {
 	public Column[] cols;
 
 	/** The vals. */
-	@SuppressWarnings("rawtypes")
 	public Value[] vals;
 
 	/** The where condition. */
@@ -39,7 +38,6 @@ public class Update implements Statement {
 	 * @param whereCondition
 	 *            the where condition
 	 */
-	@SuppressWarnings("rawtypes")
 	public Update(Target target, Column[] cols, Value[] vals, Condition[] whereCondition) {
 		this.target = target;
 		this.cols = cols;
@@ -74,7 +72,7 @@ public class Update implements Statement {
 				where += valToString;
 			}
 		}
-		res += where + Keyword.SEMICOLON.value();
+		res += where + Keyword.SEMICOLON.value() + Keyword.NEW_LINE.value();
 		return res;
 	}
 

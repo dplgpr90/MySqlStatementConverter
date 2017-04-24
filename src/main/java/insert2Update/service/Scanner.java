@@ -1,6 +1,6 @@
 /**************************************************************************
 * 
-* Created on  : 8-apr-2017  
+* Created on  : 24-apr-2017  
 * Author      : Giampiero Di Paolo
 * Project Name: Insert2Update  
 * Package     : main.java.insert2Update.service
@@ -17,9 +17,11 @@ public interface Scanner {
 	/**
 	 * Next token.
 	 *
+	 * @param ignoreWhitespace
+	 *            the ignore whitespace
 	 * @return the item type
 	 */
-	public abstract ItemType nextToken();
+	public abstract ItemType nextToken(boolean ignoreWhitespace);
 
 	/**
 	 * Gets the input.
