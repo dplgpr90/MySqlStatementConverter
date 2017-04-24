@@ -185,9 +185,6 @@ public class Converter {
 	private Value[] values() {
 		List<Value> vals = new ArrayList<Value>();
 		expect(ItemType.OPEN_BRACKET);
-
-		// TODO gestire caratteri tt in possibile valore
-
 		while (token != ItemType.CLOSED_BRACKET) {
 			vals.add(value());
 			if (token != ItemType.CLOSED_BRACKET) {
@@ -205,7 +202,7 @@ public class Converter {
 	 */
 	private Value value() {
 
-		// TODO gestire virgolette apici in valori stringa
+		// TODO gestire caratteri speciali e virgolette apici in valori stringa
 
 		String sval = "";
 		if (token == ItemType.TEXT) {
